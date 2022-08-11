@@ -7,4 +7,3 @@ python-dotenv==0.20.0
 djoser==2.1.0
 Pillow==9.2.0
 drf-base64==2.0
-requests=2.28.1

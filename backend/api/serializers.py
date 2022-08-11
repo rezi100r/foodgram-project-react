@@ -1,11 +1,15 @@
+from django.contrib.auth import get_user_model
 from django.db.models import F
 from django.shortcuts import get_object_or_404
 from djoser.serializers import UserCreateSerializer, UserSerializer
 from drf_base64.fields import Base64ImageField
 from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
 
 from recipes.models import (Ingredient, IngredientInRecipe, Recipe, Tag)
-from users.models import Follow, User
+from users.models import Follow
+
+User = get_user_model()
 
 
 class GetIsSubscribedMixin:
@@ -19,6 +23,13 @@ class GetIsSubscribedMixin:
 
 class CustomUserCreateSerializer(UserCreateSerializer):
     """Сериализатор создания пользователя"""
+    email = serializers.EmailField(
+        validators=[UniqueValidator(queryset=User.objects.all())])
+    username = serializers.CharField(
+        validators=[UniqueValidator(queryset=User.objects.all())])
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
+
     class Meta:
         model = User
         fields = ('id', 'email', 'username', 'first_name', 'last_name',
@@ -63,7 +74,7 @@ class GetIngredientsMixin:
 class RecipeReadSerializer(GetIngredientsMixin, serializers.ModelSerializer):
     """Сериализатор для чтения рецепта"""
     tags = TagSerializer(many=True)
-    author = CustomUserListSerializer
+    author = CustomUserListSerializer()
     ingredients = serializers.SerializerMethodField()
     is_favorited = serializers.BooleanField(default=False)
     is_in_shopping_cart = serializers.BooleanField(default=False)

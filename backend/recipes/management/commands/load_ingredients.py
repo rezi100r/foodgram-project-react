@@ -16,7 +16,7 @@ class Command(BaseCommand):
             return
         try:
             with open(
-                f'../data/ingredients.csv',
+                f'./data/ingredients.csv',
                 'r',
                 encoding='utf-8'
             ) as file:

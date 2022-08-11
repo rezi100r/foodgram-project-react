@@ -29,7 +29,7 @@ class Tag(models.Model):
         ordering = ('id',)
 
     def __str__(self):
-        return self.name
+        return f'{self.name}'
 
 
 class Ingredient(models.Model):
@@ -78,7 +78,7 @@ class Recipe(models.Model):
         verbose_name='Изображение',
         blank=True,
         null=True,
-        upload_to='static/recipes/',
+        upload_to='image_recipes/',
     )
     text = models.TextField(
         verbose_name='Описание',
@@ -100,7 +100,7 @@ class Recipe(models.Model):
         ordering = ('-pud_date',)
 
     def __str__(self):
-        return f'{self.author.get_full_name} - {self.name}'
+        return f'{self.name}'
 
 
 class IngredientInRecipe(models.Model):
@@ -167,7 +167,7 @@ class FavoriteRecipe(models.Model):
         ]
 
     def __str__(self):
-        return f'{self.user.get_full_name} - {self.recipe.name}'
+        return f'{self.user} - {self.recipe.name}'
 
 
 class ShoppingCart(models.Model):

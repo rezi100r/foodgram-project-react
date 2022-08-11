@@ -1,41 +1,7 @@
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth import get_user_model
 from django.db import models
 
-
-class User(AbstractUser):
-    """Кастомная модель пользователя"""
-    email = models.EmailField(
-        verbose_name='Email',
-        max_length=254,
-        unique=True,
-        help_text='Укажите ваш email.'
-    )
-    username = models.CharField(
-        verbose_name='UserName',
-        max_length=150,
-        unique=True
-    )
-    first_name = models.CharField(
-        verbose_name='Имя',
-        max_length=150,
-    )
-    last_name = models.CharField(
-        verbose_name='Фамилия',
-        max_length=150,
-    )
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username', 'first_name', 'last_name']
-
-    class Meta:
-        verbose_name = 'Пользователь'
-        verbose_name_plural = 'Пользователи'
-        ordering = ('id',)
-
-    def __str__(self):
-        return self.email
-
-    def get_full_name(self):
-        return f'{self.last_name} {self.first_name}'
+User = get_user_model()
 
 
 class Follow(models.Model):
