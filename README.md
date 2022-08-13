@@ -57,7 +57,7 @@ SECRET_KEY=super-key
 DEBUG=True
 ''' > .env
 ```
-Сборка и запуск
+#### Сборка и запуск
 ```
 cd foodgram-project-react/infra/
 docker-compose up -d --build
@@ -67,3 +67,7 @@ docker-compose exec backend python manage.py createsuperuser
 docker-compose exec backend python manage.py load_tags
 docker-compose exec backend python manage.py load_ingredients
 ```
+
+## Автор
+
+### Разработчик backend Егорченков Николай
