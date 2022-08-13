@@ -3,11 +3,10 @@ from django.db.models import F
 from django.shortcuts import get_object_or_404
 from djoser.serializers import UserCreateSerializer, UserSerializer
 from drf_base64.fields import Base64ImageField
-from rest_framework import serializers
-from rest_framework.validators import UniqueValidator
-
 from recipes.models import (FavoriteRecipe, Ingredient, IngredientInRecipe,
                             Recipe, ShoppingCart, Tag)
+from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
 from users.models import Follow
 
 User = get_user_model()

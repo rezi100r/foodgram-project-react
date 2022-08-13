@@ -2,9 +2,8 @@ from django.core.exceptions import ValidationError
 from django_filters.fields import MultipleChoiceField
 from django_filters.rest_framework import FilterSet, filters
 from django_filters.widgets import BooleanWidget
-from rest_framework.filters import SearchFilter
-
 from recipes.models import Recipe
+from rest_framework.filters import SearchFilter
 
 
 class TagsMultipleChoiceField(

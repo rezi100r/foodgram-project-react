@@ -14,13 +14,13 @@ cd backend/
 python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
-### Наполнение env-файла:
+#### Наполнение env-файла:
 
 С помощью команды ниже в папке будет создан .env-файл
 
 ```py
 echo '''SECRET_KEY=super-key
-DEBUG=1
+DEBUG=True
 DB_ENGINE=django.db.backends.sqlite3
 DB_NAME=db.sqlite3
 POSTGRES_USER=
@@ -30,7 +30,7 @@ DB_PORT=
 ''' > .env
 ```
 
-### Запуск проекта
+#### Запуск проекта
 
 ```
 python manage.py migrate
@@ -38,4 +38,32 @@ python manage.py createsuperuser
 python manage.py load_tags
 python manage.py load_ingredients
 python manage.py runserver
+```
+
+### Запуск проект в контейнерах:
+
+#### Наполнение env-файла для базы данных PostgreSQL:
+
+С помощью команды ниже в папке будет создан .env-файл
+
+```py
+echo '''DB_ENGINE=django.db.backends.postgresql
+DB_NAME=postgres
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+DB_HOST=db 
+DB_PORT=5432
+SECRET_KEY=super-key
+DEBUG=True
+''' > infra/.env
+```
+Сборка и запуск
+```
+cd foodgram-project-react/infra/
+docker-compose up -d --build
+docker-compose exec backend python manage.py migrate
+docker-compose exec backend python manage.py collectstatic --no-input
+docker-compose exec backend python manage.py createsuperuser
+docker-compose exec backend python manage.py load_tags
+docker-compose exec backend python manage.py load_ingredients
 ```

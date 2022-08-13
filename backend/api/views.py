@@ -6,14 +6,14 @@ from django.db.models import BooleanField, Exists, OuterRef, Sum, Value
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from djoser.views import UserViewSet
-from rest_framework import mixins, viewsets
-from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated, SAFE_METHODS
-from rest_framework.response import Response
-
 from recipes.models import (FavoriteRecipe, Ingredient, IngredientInRecipe,
                             Recipe, ShoppingCart, Tag)
+from rest_framework import mixins, viewsets
+from rest_framework.decorators import action
+from rest_framework.permissions import SAFE_METHODS, IsAuthenticated
+from rest_framework.response import Response
 from users.models import Follow
+
 from .filters import IngredientSearchFilter, RecipeFilter
 from .permissions import IsAdminAuthorOrReadOnly, IsAdminOrReadOnly
 from .serializers import (CheckFavoriteSerializer, CheckShoppingCartSerializer,
@@ -91,8 +91,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
         serializer = CheckFavoriteSerializer(
             data=data, context={'request': request}
         )
-        if serializer.is_valid(raise_exception=True):
-            return self.add_object(FavoriteRecipe, request.user, pk)
+        serializer.is_valid(raise_exception=True)
+        return self.add_object(FavoriteRecipe, request.user, pk)
 
     @favorite.mapping.delete
     def del_favorite(self, request, pk=None):
@@ -103,8 +103,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
         serializer = CheckFavoriteSerializer(
             data=data, context={'request': request}
         )
-        if serializer.is_valid(raise_exception=True):
-            return self.delete_object(FavoriteRecipe, request.user, pk)
+        serializer.is_valid(raise_exception=True)
+        return self.delete_object(FavoriteRecipe, request.user, pk)
 
     @action(
         detail=True,
@@ -119,8 +119,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
         serializer = CheckShoppingCartSerializer(
             data=data, context={'request': request}
         )
-        if serializer.is_valid(raise_exception=True):
-            return self.add_object(ShoppingCart, request.user, pk)
+        serializer.is_valid(raise_exception=True)
+        return self.add_object(ShoppingCart, request.user, pk)
 
     @shopping_cart.mapping.delete
     def del_shopping_cart(self, request, pk=None):
@@ -131,8 +131,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
         serializer = CheckShoppingCartSerializer(
             data=data, context={'request': request}
         )
-        if serializer.is_valid(raise_exception=True):
-            return self.delete_object(ShoppingCart, request.user, pk)
+        serializer.is_valid(raise_exception=True)
+        return self.delete_object(ShoppingCart, request.user, pk)
 
     @transaction.atomic()
     def add_object(self, model, user, pk):
@@ -187,10 +187,10 @@ class FollowViewSet(UserViewSet):
             data=data,
             context={'request': request},
         )
-        if serializer.is_valid(raise_exception=True):
-            result = Follow.objects.create(user=user, author=author)
-            serializer = FollowSerializer(result, context={'request': request})
-            return Response(serializer.data, status=HTTPStatus.CREATED)
+        serializer.is_valid(raise_exception=True)
+        result = Follow.objects.create(user=user, author=author)
+        serializer = FollowSerializer(result, context={'request': request})
+        return Response(serializer.data, status=HTTPStatus.CREATED)
 
     @subscribe.mapping.delete
     @transaction.atomic()
@@ -205,9 +205,9 @@ class FollowViewSet(UserViewSet):
             data=data,
             context={'request': request},
         )
-        if serializer.is_valid(raise_exception=True):
-            user.follower.filter(author=author).delete()
-            return Response(status=HTTPStatus.NO_CONTENT)
+        serializer.is_valid(raise_exception=True)
+        user.follower.filter(author=author).delete()
+        return Response(status=HTTPStatus.NO_CONTENT)
 
     @action(detail=False, permission_classes=[IsAuthenticated])
     def subscriptions(self, request):

@@ -1,7 +1,6 @@
 from csv import DictReader
 
 from django.core.management import BaseCommand
-
 from recipes.models import Ingredient
 
 ALREADY_LOADED_ERROR_MESSAGE = 'В базе уже есть данные.'
@@ -16,7 +15,7 @@ class Command(BaseCommand):
             return
         try:
             with open(
-                f'./data/ingredients.csv',
+                './data/ingredients.csv',
                 'r',
                 encoding='utf-8'
             ) as file:
