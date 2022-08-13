@@ -55,7 +55,7 @@ DB_HOST=db
 DB_PORT=5432
 SECRET_KEY=super-key
 DEBUG=True
-''' > infra/.env
+''' > .env
 ```
 Сборка и запуск
 ```
