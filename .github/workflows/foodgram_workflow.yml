@@ -72,7 +72,7 @@ jobs:
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram_back:latest
             sudo docker-compose stop
             sudo docker-compose rm backend
-            touch .env
+            sudo touch .env
             echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
             echo DB_NAME=${{ secrets.DB_NAME }} >> .env
             echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> .env
@@ -84,8 +84,8 @@ jobs:
             sudo docker-compose up -d
             sudo docker-compose exec -T backend python manage.py migrate
             sudo docker-compose exec -T backend python manage.py collectstatic --no-input
-            docker-compose exec -T backend python manage.py load_tags
-            docker-compose exec -T backend python manage.py load_ingredients
+            sudo docker-compose exec -T backend python manage.py load_tags
+            sudo docker-compose exec -T backend python manage.py load_ingredients
             
   send_message_telegram:
     name: Send message to Telegram
