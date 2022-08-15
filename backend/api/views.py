@@ -44,8 +44,7 @@ class IngredientViewSet(ListRetrieveViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     pagination_class = None
-    filter_backends = (IngredientSearchFilter,)
-    search_fields = ('^name',)
+    filter_class = IngredientSearchFilter
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
@@ -155,7 +154,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         ).values(
             'ingredient__name',
             'ingredient__measurement_unit'
-        ).annotate(total=Sum('amount'))
+        ).order_by('ingredient__name').annotate(total=Sum('amount'))
         result = HEADER_FILE_CART
         result += '\n'.join([
             f'{ingredient["ingredient__name"]} - {ingredient["total"]}/'
